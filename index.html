@@ -3,28 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RikMakersHub: RikHydroTech-Pro</title>
+    <title>RikMakersHub: RikHydroTech-Pro Field Terminal</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <!-- Main Navigation/Status Header -->
     <header class="hub-header">
-        <div class="brand-title">🛠️ RikMakersHub: RikHydroTech-Pro</div>
+        <div class="brand-title">🛠️ RikMakersHub: RikHydroTech-Pro Standalone Terminal</div>
         <div class="status-bar">
             <span>[ Inline Spectrometer Lab ]</span>
             <span>[ Non-Contact Optical Fluid Analyzer ]</span>
-            <span>[ Under-Sub-5-USD Build ]</span>
+            <span>[ Under-Sub-6-USD Build ]</span>
         </div>
-       
+        <div class="btn-group">
+            <button class="nav-btn btn-blue">⚡ Field Security Report</button>
+            <button class="nav-btn btn-dark">📊 Graph Portal</button>
+            <button class="nav-btn btn-dark">🌐 Network Hub</button>
+        </div>
     </header>
 
     <main class="content-container">
-        <p class="project-intro">An ultra-low-cost (~$4.50), modular, and inline optical spectrometry system engineered to detect liquid contamination, milk adulteration, or water pollution metrics without custom laboratory hardware deployments or persistent cloud configurations.</p>
+        <p class="project-intro">An ultra-low-cost (~$5.80), modular, and mobile optical spectrometry system engineered to detect liquid contamination, milk adulteration, or water pollution metrics completely untethered using an onboard OLED terminal display and LiPo battery power configuration.</p>
 
         <!-- VALUE ENGINEERING SECTION -->
         <section class="data-block">
-            <h2 class="section-title">📊 VALUE ENGINEERING // BOM (~₹350)</h2>
+            <h2 class="section-title">📊 VALUE ENGINEERING // FINAL BOM (~₹500)</h2>
             <div class="table-responsive">
                 <table class="bom-table">
                     <thead>
@@ -38,9 +42,21 @@
                     <tbody>
                         <tr>
                             <td>MCU Core</td>
-                            <td>Arduino Pro Mini 3.3V </td>
+                            <td>Arduino Pro Mini 3.3V / ATmega328P</td>
                             <td>₹180</td>
                             <td>Runs spectrum processing matrices.</td>
+                        </tr>
+                        <tr>
+                            <td>Local Display</td>
+                            <td>0.96" I2C OLED (SSD1306, 128x64)</td>
+                            <td>₹120</td>
+                            <td>Renders real-time fluid analysis values in the field.</td>
+                        </tr>
+                        <tr>
+                            <td>Power Source</td>
+                            <td>3.7V Lithium Polymer (LiPo) Battery</td>
+                            <td>₹110</td>
+                            <td>Provides mobile, off-grid power tracking capability.</td>
                         </tr>
                         <tr>
                             <td>Receiver</td>
@@ -69,8 +85,8 @@
                         <tr class="total-row">
                             <td>Estimated Total Outlay:</td>
                             <td>-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</td>
-                            <td>~₹270 SUCCESS</td>
-                            <td>Wireframe system built under target.</td>
+                            <td>~₹500 SUCCESS</td>
+                            <td>Untethered field system built under budget.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -79,41 +95,69 @@
 
         <!-- FIRMWARE ENGINE SECTION -->
         <section class="data-block">
-            <h2 class="section-title">💻 Micro-controller Code (FIRMWARE ARCHITECTURE BLUEPRINT) (EMBEDDED C++)</h2>
+            <h2 class="section-title">💻 FIRMWARE ARCHITECTURE BLUEPRINT (EMBEDDED C++ / I2C OLED)</h2>
             <div class="code-editor-box">
-                <pre><code><span class="comment">// Project HydroTech // Spectral Density Calibration Matrix</span>
-<span class="keyword">#define</span> LDR_PIN A0
-<span class="keyword">#define</span> EMITTER_R 2
-<span class="keyword">#define</span> EMITTER_G 3
-<span class="keyword">#define</span> EMITTER_B 4
+                <pre><code>// Project HydroTech // Spectral Density Matrix & OLED Field Terminal
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
 
-<span class="type">void</span> <span class="keyword">setup_hardware</span>() {
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define OLED_RESET    -1
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &amp;Wire, OLED_RESET);
+
+#define LDR_PIN A0
+#define EMITTER_R 2
+#define EMITTER_G 3
+#define EMITTER_B 4
+
+void setup_hardware() {
     pinMode(EMITTER_R, OUTPUT);
     pinMode(EMITTER_G, OUTPUT);
     pinMode(EMITTER_B, OUTPUT);
     Serial.begin(115200);
+    
+    // Initialize local I2C OLED screen
+    if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { 
+        Serial.println(F("OLED Allocation Failed"));
+        for(;;);
+    }
+    display.clearDisplay();
+    display.setTextColor(SSD1306_WHITE);
 }
-
-<span class="type">uint16_t</span> <span class="keyword">capture_vector</span>(<span class="type">uint8_t</span> pin) {
+uint16_t capture_vector(uint8_t pin) {
     digitalWrite(pin, HIGH);
-    delay(85); <span class="comment">// Ambient recovery stabilization window</span>
-    <span class="type">uint16_t</span> raw = analogRead(LDR_PIN);
+    delay(85); // Ambient recovery stabilization window
+    uint16_t raw = analogRead(LDR_PIN);
     digitalWrite(pin, LOW);
-    <span class="keyword">return</span> raw;
+    return raw;
 }
 
-<span class="type">void</span> <span class="keyword">loop</span>() {
-    <span class="type">uint16_t</span> rSum = capture_vector(EMITTER_R);
-    <span class="type">uint16_t</span> gSum = capture_vector(EMITTER_G);
-    <span class="type">uint16_t</span> bSum = capture_vector(EMITTER_B);
+void loop() {
+    uint16_t rSum = capture_vector(EMITTER_R);
+    uint16_t gSum = capture_vector(EMITTER_G);
+    uint16_t bSum = capture_vector(EMITTER_B);
 
-    <span class="comment">// Stream stabilized multi-wavelength data signatures</span>
+    // Render telemetry packet locally onto physical screen
+    display.clearDisplay();
+    display.setCursor(0,0);
+    display.setTextSize(1);
+    display.println(F("FLUID ANALYSIS: LIVE"));
+    display.println(F("--------------------"));
+    display.print(F("RAW_R: ")); display.println(rSum);
+    display.print(F("RAW_G: ")); display.println(gSum);
+    display.print(F("RAW_B: ")); display.println(bSum);
+    display.print(F("SYS_STATUS: ACTIVE"));
+    display.display();
+
+    // Stream stabilized telemetry string over serial
     Serial.print("VEC:"); 
     Serial.print(rSum); Serial.print(",");
     Serial.print(gSum); Serial.print(",");
     Serial.println(bSum);
 
-    delay(2000); <span class="comment">// Stabilized pacing interval</span>
+    delay(2000);
 }</code></pre>
             </div>
         </section>
@@ -122,7 +166,7 @@
         <section class="data-block">
             <h2 class="section-title">🔋 DEEP-SLEEP POWER OPTIMIZATION (PRO MINI HARDWARE HACK)</h2>
             <ul class="strategy-list">
-                <li><strong>Onboard SMD LED Removal:</strong> Standard Arduino Pro Mini development boards feature a surface-mounted (SMD) Power LED that constantly draws an unnecessary 3mA to 5mA of phantom current.</li>
+                <li><strong>Onboard SMD LED Removal:</strong> Standard Arduino Pro Mini development boards feature a surface-mounted (SMD) Power LED that constantly draws an unnecessary 3mA to 5mA of phantom current from your LiPo storage node.</li>
                 <li><strong>Execution Step:</strong> Carefully use a clean soldering iron tip or a sharp tool to desolder or flick off the onboard Power SMD LED and its corresponding current-limiting resistor from the PCB. Be highly cautious not to bridge adjacent logic paths or damage the reset trace lines.</li>
                 <li><strong>The Technical Payoff:</strong> Removing this single redundant element drops the hardware sleep current floor from milliamps down to an ultra-low **under-20 microamps (&micro;A)** spectrum, extending standalone battery operating windows from a few days to several months on a minimal off-grid cell.</li>
             </ul>
@@ -135,7 +179,8 @@
                 <li><strong>Chassis Modification:</strong> Take a standard 1" PVC T-joint pipeline coupling. Coat the entire interior cavity with matte-black surface shielding or black electrical tape to ensure external environmental lux readings remain at zero.</li>
                 <li><strong>Optical Element Alignment:</strong> Mount the high-intensity RGB LED array directly inside one straight end of the T-joint, and the 5mm LDR photoresistor on the exact opposite side, securing them with hot glue to form a direct, parallel light-beam axis.</li>
                 <li><strong>Fluid Path Integration:</strong> Insert a clear glass test tube down through the top perpendicular opening of the PVC T-joint, so it intercepts the path between the LED and the LDR. Fill the tube with pure water to test.</li>
-                <li><strong>Calibration Protocol:</strong> Upload the production firmware, open the Serial Monitor, and log the initial raw base vectors for clean water (`rSum`, `gSum`, `bSum`). Any fluid sample tested later that skews lower than these values indicates light scattering due to contamination or adulteration particles.</li>
+                <li><strong>Display & Power Wiring:</strong> Wire the 0.96" OLED display to the Pro Mini using its hardware I2C bus pins (**A4 to SDA, A5 to SCL**). Connect the 3.7V LiPo battery terminal lines into the Pro Mini's **RAW** and **GND** power input sockets to run the node completely untethered.</li>
+                <li><strong>Calibration Protocol:</strong> Upload the production firmware, open the screen display, and log the initial raw base vectors for clean water (`rSum`, `gSum`, `bSum`). Any fluid sample tested later that skews lower than these values indicates light scattering due to contamination or adulteration particles.</li>
             </ul>
         </section>
 
