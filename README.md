@@ -54,5 +54,6 @@ By cleanly isolating the board from this single redundant indicator element, you
 * **Power Conservation Loop:** The firmware keeps emitter nodes asleep during deep tracking delays to minimize active current pull on battery networks.
 * **Anti-Fluid Isolation:** The internal sampling path uses clear glass wall isolation layers to keep critical logic terminals dry and operating reliably in tough outdoor or lab conditions.
 
+**Come Check It Out In:**[RikHydroTech-Pro](https://rikmakershub.github.io/RikHydroTech-Pro/)
 ---
 *Designed for Extreme Replicability & Real-World Utility by RikMakersHub.*
