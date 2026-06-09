@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RikMakersHub:RikHydroTech-Pro</title>
+    <title>RikMakersHub: RikAgriculture-Pro HydroTech</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <!-- Main Navigation/Status Header -->
     <header class="hub-header">
-        <div class="brand-title">🛠️ RikMakersHub: RikHydroTech-Pro</div>
+        <div class="brand-title">🛠️ RikMakersHub: RikAgriculture-Pro HydroTech</div>
         <div class="status-bar">
             <span>[ Inline Spectrometer Lab ]</span>
             <span>[ Non-Contact Optical Fluid Analyzer ]</span>
             <span>[ Under-Sub-5-USD Build ]</span>
         </div>
-           </header>
+        <div class="btn-group">
+            <button class="nav-btn btn-blue">⚡ Field Security Report</button>
+            <button class="nav-btn btn-dark">📊 Graph Portal</button>
+            <button class="nav-btn btn-dark">🌐 Network Hub</button>
+        </div>
+    </header>
 
     <main class="content-container">
         <p class="project-intro">An ultra-low-cost (~$4.50), modular, and inline optical spectrometry system engineered to detect liquid contamination, milk adulteration, or water pollution metrics without custom laboratory hardware deployments or persistent cloud configurations.</p>
@@ -37,7 +42,7 @@
                     <tbody>
                         <tr>
                             <td>MCU Core</td>
-                            <td>Arduino Pro Mini 3.3V / Pi Pico</td>
+                            <td>Arduino Pro Mini 3.3V </td>
                             <td>₹180</td>
                             <td>Runs spectrum processing matrices.</td>
                         </tr>
@@ -115,6 +120,16 @@
     delay(2000); <span class="comment">// Stabilized pacing interval</span>
 }</code></pre>
             </div>
+        </section>
+
+        <!-- DEEP-SLEEP POWER OPTIMIZATION SECTION -->
+        <section class="data-block">
+            <h2 class="section-title">🔋 DEEP-SLEEP POWER OPTIMIZATION (PRO MINI HARDWARE HACK)</h2>
+            <ul class="strategy-list">
+                <li><strong>Onboard SMD LED Removal:</strong> Standard Arduino Pro Mini development boards feature a surface-mounted (SMD) Power LED that constantly draws an unnecessary 3mA to 5mA of phantom current.</li>
+                <li><strong>Execution Step:</strong> Carefully use a clean soldering iron tip or a sharp tool to desolder or flick off the onboard Power SMD LED and its corresponding current-limiting resistor from the PCB. Be highly cautious not to bridge adjacent logic paths or damage the reset trace lines.</li>
+                <li><strong>The Technical Payoff:</strong> Removing this single redundant element drops the hardware sleep current floor from milliamps down to an ultra-low **under-20 microamps (&micro;A)** spectrum, extending standalone battery operating windows from a few days to several months on a minimal off-grid cell.</li>
+            </ul>
         </section>
 
         <!-- FIELD ASSEMBLY & CALIBRATION GUIDE -->
