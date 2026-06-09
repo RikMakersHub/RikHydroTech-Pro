@@ -1,7 +1,7 @@
 # 🛰️ Project HydroTech: Ultra-Low-Cost Inline Fluid Spectrometer
 > Open-Source Bare-Metal Fluid Analytics Terminal by RikMakersHub
 
-An ultra-low-cost (~$4.50 / ₹350), standalone optical spectrometry system engineered to detect liquid contamination, fluid density shifts, or chemical transmission profiles natively without custom laboratory hardware or cloud configurations.
+An ultra-low-cost (~$5.80 / ₹500), standalone optical spectrometry system engineered to detect liquid contamination, fluid density shifts, or chemical transmission profiles natively without custom laboratory hardware or cloud configurations.
 
 ---
 
