@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RikMakersHub:RikHydroTech-Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Main Navigation/Status Header -->
+    <header class="hub-header">
+        <div class="brand-title">🛠️ RikMakersHub: RikHydroTech-Pro</div>
+        <div class="status-bar">
+            <span>[ Inline Spectrometer Lab ]</span>
+            <span>[ Non-Contact Optical Fluid Analyzer ]</span>
+            <span>[ Under-Sub-5-USD Build ]</span>
+        </div>
+           </header>
+
+    <main class="content-container">
+        <p class="project-intro">An ultra-low-cost (~$4.50), modular, and inline optical spectrometry system engineered to detect liquid contamination, milk adulteration, or water pollution metrics without custom laboratory hardware deployments or persistent cloud configurations.</p>
+
+        <!-- VALUE ENGINEERING SECTION -->
+        <section class="data-block">
+            <h2 class="section-title">📊 VALUE ENGINEERING // BOM (~₹350)</h2>
+            <div class="table-responsive">
+                <table class="bom-table">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Selection</th>
+                            <th>Cost (INR)</th>
+                            <th>Operational Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>MCU Core</td>
+                            <td>Arduino Pro Mini 3.3V / Pi Pico</td>
+                            <td>₹180</td>
+                            <td>Runs spectrum processing matrices.</td>
+                        </tr>
+                        <tr>
+                            <td>Receiver</td>
+                            <td>LDR Photoresistor (5mm)</td>
+                            <td>₹30</td>
+                            <td>Measures dynamic analog voltage drops.</td>
+                        </tr>
+                        <tr>
+                            <td>Optics</td>
+                            <td>High-Intensity RGB LED Array</td>
+                            <td>₹15</td>
+                            <td>Flashes sequential R-G-B light vectors.</td>
+                        </tr>
+                        <tr>
+                            <td>Storage</td>
+                            <td>Premium Clear Glass Tube</td>
+                            <td>₹20</td>
+                            <td>Isolates target fluids without interference.</td>
+                        </tr>
+                        <tr>
+                            <td>Enclosure</td>
+                            <td>1" PVC Pipeline T-Joint Coupling</td>
+                            <td>₹25</td>
+                            <td>Nullifies environmental ambient lux leaks.</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>Estimated Total Outlay:</td>
+                            <td>-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --</td>
+                            <td>~₹270 SUCCESS</td>
+                            <td>Wireframe system built under target.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- FIRMWARE ENGINE SECTION -->
+        <section class="data-block">
+            <h2 class="section-title">💻 FIRMWARE ARCHITECTURE BLUEPRINT (EMBEDDED C++)</h2>
+            <div class="code-editor-box">
+                <pre><code><span class="comment">// Project HydroTech // Spectral Density Calibration Matrix</span>
+<span class="keyword">#define</span> LDR_PIN A0
+<span class="keyword">#define</span> EMITTER_R 2
+<span class="keyword">#define</span> EMITTER_G 3
+<span class="keyword">#define</span> EMITTER_B 4
+
+<span class="type">void</span> <span class="keyword">setup_hardware</span>() {
+    pinMode(EMITTER_R, OUTPUT);
+    pinMode(EMITTER_G, OUTPUT);
+    pinMode(EMITTER_B, OUTPUT);
+    Serial.begin(115200);
+}
+
+<span class="type">uint16_t</span> <span class="keyword">capture_vector</span>(<span class="type">uint8_t</span> pin) {
+    digitalWrite(pin, HIGH);
+    delay(85); <span class="comment">// Ambient recovery stabilization window</span>
+    <span class="type">uint16_t</span> raw = analogRead(LDR_PIN);
+    digitalWrite(pin, LOW);
+    <span class="keyword">return</span> raw;
+}
+
+<span class="type">void</span> <span class="keyword">loop</span>() {
+    <span class="type">uint16_t</span> rSum = capture_vector(EMITTER_R);
+    <span class="type">uint16_t</span> gSum = capture_vector(EMITTER_G);
+    <span class="type">uint16_t</span> bSum = capture_vector(EMITTER_B);
+
+    <span class="comment">// Stream stabilized multi-wavelength data signatures</span>
+    Serial.print("VEC:"); 
+    Serial.print(rSum); Serial.print(",");
+    Serial.print(gSum); Serial.print(",");
+    Serial.println(bSum);
+
+    delay(2000); <span class="comment">// Stabilized pacing interval</span>
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- FIELD ASSEMBLY & CALIBRATION GUIDE -->
+        <section class="data-block">
+            <h2 class="section-title">🛠️ 04 // FIELD ASSEMBLY & CALIBRATION GUIDE</h2>
+            <ul class="strategy-list">
+                <li><strong>Chassis Modification:</strong> Take a standard 1" PVC T-joint pipeline coupling. Coat the entire interior cavity with matte-black surface shielding or black electrical tape to ensure external environmental lux readings remain at zero.</li>
+                <li><strong>Optical Element Alignment:</strong> Mount the high-intensity RGB LED array directly inside one straight end of the T-joint, and the 5mm LDR photoresistor on the exact opposite side, securing them with hot glue to form a direct, parallel light-beam axis.</li>
+                <li><strong>Fluid Path Integration:</strong> Insert a clear glass test tube down through the top perpendicular opening of the PVC T-joint, so it intercepts the path between the LED and the LDR. Fill the tube with pure water to test.</li>
+                <li><strong>Calibration Protocol:</strong> Upload the production firmware, open the Serial Monitor, and log the initial raw base vectors for clean water (`rSum`, `gSum`, `bSum`). Any fluid sample tested later that skews lower than these values indicates light scattering due to contamination or adulteration particles.</li>
+            </ul>
+        </section>
+
+        <!-- FIELD STRATEGY SECTION -->
+        <section class="data-block">
+            <h2 class="section-title">🚀 CROSS-FIELD IMPLEMENTATION STRATEGY</h2>
+            <ul class="strategy-list">
+                <li>Deploy spectrometer node directly onto primary intake plumbing channels or inline liquid paths across regional testing arrays.</li>
+                <li><strong>Anti-Lux Configuration:</strong> Ensure the internal PVC conduit chamber is thoroughly treated with matte black surface shielding to eliminate stray sun vectors.</li>
+                <li><strong>Power Optimization:</strong> Sleep peripheral emitter arrays during long sampling intervals to keep current drain metrics minimal.</li>
+                <li><strong>Weatherproofing:</strong> Drill small downward weeping structural paths at the base frame to route accidental overflow fluids clear of internal logic.</li>
+            </ul>
+        </section>
+    </main>
+
+</body>
+</html>
